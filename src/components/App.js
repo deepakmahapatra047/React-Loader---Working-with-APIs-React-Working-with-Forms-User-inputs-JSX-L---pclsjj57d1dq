@@ -19,11 +19,27 @@ const App = () => {
     phone: "",
     webiste: "",
   });
+console.log("userId",userId)
+  const handleOnClick = () => {
+    setIsLoading(LoadingStatus.IN_PROGRESS)
+    setTimeout(()=>{
+      fetch(`${BASE_URL}/${userId}`).then((resp)=>{
+      
+        return resp.json()
+       
+      }).then((data)=>{
+          setUserData(data)
+          console.log("@userId",userId,"data",data)
+          setIsLoading(LoadingStatus.SUCCESS)
+      })
+     
 
-  const handleOnClick = () => {};
+    },2000)
+  };
 
   const onChangeHandler = (event) => {
     setUserId(event.target.value);
+    console.log("target",event.target.value)
   };
 
   return (
@@ -32,7 +48,7 @@ const App = () => {
       <input
         type="number"
         value={userId}
-        onChange={onChangeHandler}
+        onChange={(e)=>{onChangeHandler(e)}}
         id="input"
         min={1}
         max={10}
@@ -40,15 +56,20 @@ const App = () => {
       <button id="btn" onClick={handleOnClick}>
         Get User
       </button>
+{isLoading === LoadingStatus.IN_PROGRESS ? <Loader/>:
 
       <div id="data">
         <h1>Click on the button to get the user</h1>
+
+   
+
         <h4 id="id">{userData.id}</h4>
         <h4 id="email">{userData.email}</h4>
         <h4 id="name">{userData.name}</h4>
         <h4 id="phone">{userData.phone}</h4>
         <h4 id="website">{userData.website}</h4>
       </div>
+}
     </div>
   );
 };
